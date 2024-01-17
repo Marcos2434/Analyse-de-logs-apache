@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
     // est d'utiliser un dictionnaire ordonne (map) qui associe un mot a un nombre
     // map<string [URL], int [frequence]>
 
-    std::map<std::string, int> hits;
+    std::map<std::string, std::map<std::string, int>> hitsRef;
 
     std::string ligne;
     
@@ -86,21 +86,33 @@ int main(int argc, char* argv[]) {
     int status, size;
     
     // order: IP, userLogname, authUser, dateHour, GMTdiff, action, URL, HTTPversion, status, size, refererURL, browserID
-    const std::string delimiter = " ";
-    while (f >> IP >> userLogname >> authUser >> dateHour >> GMTdiff >> 
-    action >> URL >> HTTPversion >> status >> size >> refererURL >> browserID) {
+    while (f >> IP >> userLogname >> authUser >> dateHour >> GMTdiff >> action 
+    >> URL >> HTTPversion >> status >> size >> refererURL) {
+        // the rest goes into browserID
+        std::getline(f, browserID);
+
         // strip "[" from dateHour
         dateHour = dateHour.substr(1, dateHour.length() - 1);
+
         // strip "]" from GMTdiff
         GMTdiff = GMTdiff.substr(0, GMTdiff.length() - 1);
+
         // strip """ from action
         action = action.substr(1, action.length() - 1);
+
         // strip """ from HTTPversion
         HTTPversion = HTTPversion.substr(0, HTTPversion.length() - 1);
+
         // strip """ from refererURL
         refererURL = refererURL.substr(1, refererURL.length() - 2);
+
         // strip """ from browserID
         browserID = browserID.substr(1, browserID.length() - 2);
+
+        // strip until the last "/" from refererURL
+        if (refererURL.length() > 1) {
+            refererURL = refererURL.substr(refererURL.find_last_of("/"), refererURL.length() - 1);
+        }
 
         // std::cout << IP << std::endl;
         // std::cout << userLogname << std::endl;
@@ -133,8 +145,10 @@ int main(int argc, char* argv[]) {
                 continue;
             }
         }
-        hits[URL] += 1;
+        hitsRef[URL][refererURL] += 1;
+        hitsRef[URL]["total"] += 1;
     }
+
 
     // on affiche le map ordonne par frequence
     // for (auto const& x : hits) {
@@ -146,17 +160,31 @@ int main(int argc, char* argv[]) {
     // Search, insertion, and removal operations have logarithmic complexity.
     // https://arc.net/l/quote/jsyuirej
     std::multimap<int, std::string, std::greater<int>> orderedHits; 
-    for (auto const& x : hits) {
-        orderedHits.insert(std::make_pair(x.second, x.first));
+    for (auto const& x : hitsRef) {
+        orderedHits.insert(std::make_pair(x.second.at("total"), x.first));
     }
-    
+
     for (auto const& x : orderedHits) {
         std::cout << x.second << " (" << x.first << " hits)" << std::endl;
     }
 
-
+    if (graphviz) {
+        std::ofstream of(graphvizFilename);
+        if (!of.is_open()) {
+            std::cout << "Erreur lors de l'ouverture du fichier" << std::endl;
+            return 1;
+        }
+        of << "digraph {" << std::endl;
+        for (auto const& x : hitsRef) {
+            for (auto const& y : x.second) {
+                if (y.first != "total") {
+                    of << "\"" << y.first << "\" -> \"" << x.first << "\" [label=\"" << y.second << "\"];" << std::endl;
+                }
+            }
+        }
+        of << "}" << std::endl;
+        of.close();
+    }
 
     return 0;
 }
-
-
