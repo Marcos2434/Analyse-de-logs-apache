@@ -65,7 +65,6 @@ int main(int argc, char* argv[]) {
     // std::cout << "time: " << time << std::endl;
     // std::cout << "timeHour: " << timeHour << std::endl;
 
-
     std::ifstream f(filename);
 
     if (!f.is_open()) {
@@ -111,7 +110,20 @@ int main(int argc, char* argv[]) {
 
         // strip until the last "/" from refererURL
         if (refererURL.length() > 1) {
-            refererURL = refererURL.substr(refererURL.find_last_of("/"), refererURL.length() - 1);
+            // check if refererURL starts with "http://intranet-if.insa-lyon.fr"
+            // if so rename it to "intranet_insa/<refererURL.substr(refererURL.find_last_of("/"), refererURL.length() - 1)> "
+            // else rename it to the immediate parent directory ex:
+            // http://www.google.fr/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&ved=0CDIQFjAB&url=http%3A%2F%2Fintranet-if.insa-lyon.fr%2Ftemps%2F&ei=_wxLUKCwEMaJhQe08oCYCw&usg=AFQjCNEWrHsRdIlhli_31qYl94w-yMCjpw&sig2=eTdZgqmz8aDAi5eiWxEP1g
+            // becomes "www.google.fr"
+
+            if (refererURL.substr(0, 31).compare("http://intranet-if.insa-lyon.fr") == 0) {
+                size_t lastSlashPos = refererURL.find_last_of("/");
+                refererURL = "insa" + refererURL.substr(lastSlashPos);
+            } else {
+                size_t startPos = refererURL.find("://") + 3;
+                size_t endPos = refererURL.find("/", startPos);
+                refererURL = refererURL.substr(startPos, endPos - startPos);
+            }
         }
 
         // std::cout << IP << std::endl;
@@ -132,6 +144,7 @@ int main(int argc, char* argv[]) {
             if (URL.find(".jpg") != std::string::npos 
             || URL.find(".png") != std::string::npos 
             || URL.find(".jpeg") != std::string::npos 
+            || URL.find(".ics") != std::string::npos 
             || URL.find(".ico") != std::string::npos 
             || URL.find(".gif") != std::string::npos 
             || URL.find(".css") != std::string::npos 
@@ -156,8 +169,9 @@ int main(int argc, char* argv[]) {
     // }
 
     // on cree un nouveau multimap ordonne par frequence descendante
-    // Sorting is done according to the comparison function Compare
-    // Search, insertion, and removal operations have logarithmic complexity.
+
+    // "Sorting is done according to the comparison function Compare
+    // Search, insertion, and removal operations have logarithmic complexity."
     // https://arc.net/l/quote/jsyuirej
     std::multimap<int, std::string, std::greater<int>> orderedHits; 
     for (auto const& x : hitsRef) {
