@@ -5,14 +5,17 @@ TMP_DIR = ./tmp
 
 all: analog
 
-analog: analog.o
-	$(CC) $(CFLAGS) -o analog $(TMP_DIR)/analog.o
+analog: analog.o Analyzer.o
+	$(CC) $(CFLAGS) -o analog $(TMP_DIR)/analog.o $(TMP_DIR)/Analyzer.o
 
-analog.o: $(SRC_DIR)/analog.cpp
+analog.o: Analyzer.o $(SRC_DIR)/analog.cpp $(SRC_DIR)/Analyzer.h
 	$(CC) $(CFLAGS) -c $(SRC_DIR)/analog.cpp -o $(TMP_DIR)/analog.o 
 
-# run: analog
-# 	$(SRC_DIR)/analog
+Analyzer.o: $(SRC_DIR)/Analyzer.cpp $(SRC_DIR)/Analyzer.h
+	$(CC) $(CFLAGS) -c $(SRC_DIR)/Analyzer.cpp -o $(TMP_DIR)/Analyzer.o
+
+run: analog
+	./analog
 
 clean:
 	rm -f analog $(TMP_DIR)/*.o *.o
