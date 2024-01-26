@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include "Analyzer.h"
 
 
@@ -37,10 +38,10 @@ int main(int argc, char* argv[]) {
     std::string filename = argv[argc-1];
 
     for (size_t i = 1; i < argc; i++) {
-        if (std::strcmp(argv[i], "-e") == 0) {
+        if (strcmp(argv[i], "-e") == 0) {
             exclude = true;
         }
-        else if (std::strcmp(argv[i], "-g") == 0) {
+        else if (strcmp(argv[i], "-g") == 0) {
             graphviz = true;
             if (argv[i+1][0] != '-' && i+2 != argc) graphvizFilename = argv[(i++)+1];
             else {
@@ -48,7 +49,7 @@ int main(int argc, char* argv[]) {
                 return 1;
             }
         }
-        else if (std::strcmp(argv[i], "-t") == 0) {
+        else if (strcmp(argv[i], "-t") == 0) {
             time = true;
             if (argv[i+1][0] != '-' && i+2 != argc) timeHour = argv[(i++)+1];
             else {
