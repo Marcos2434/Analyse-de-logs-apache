@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 
     std::string filename = argv[argc-1];
 
-    for (size_t i = 1; i < argc; i++) {
+    for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-e") == 0) {
             exclude = true;
         }
