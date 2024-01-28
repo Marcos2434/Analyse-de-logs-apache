@@ -18,3 +18,5 @@ associés.
 -t heure
 Cette option permet de ne prendre en compte que les hits qui sont dans le créneau horaire
 correspondant à l’intervalle [heure, heure+1[.
+
+le programme fournit un cadre de test pour une couverture maximale.
