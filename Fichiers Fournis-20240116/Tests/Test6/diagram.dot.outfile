@@ -1,0 +1,19 @@
+digraph {
+"if.insa-lyon.fr" -> "/SiteWebIF/Intranet-etudiant.php" [label="1"];
+"-" -> "/favicon.ico" [label="1"];
+"www.google.fr" -> "/temps/" [label="1"];
+"insa/" -> "/temps/3IF37.html" [label="1"];
+"insa/3IF37.html" -> "/temps/3IF38.html" [label="2"];
+"insa/3IF38.html" -> "/temps/3IF39.html" [label="1"];
+"insa/4IF15.html" -> "/temps/4IF16.html" [label="1"];
+"insa/4IF16.html" -> "/temps/4IF17.html" [label="1"];
+"insa/4IF17.html" -> "/temps/4IF18.html" [label="1"];
+"insa/4IF18.html" -> "/temps/4IF19.html" [label="1"];
+"insa/4IF19.html" -> "/temps/4IF20.html" [label="1"];
+"insa/style_emploi_du_temps.css" -> "/temps/FondInsa.jpg" [label="1"];
+"-" -> "/temps/InsaIF.ico" [label="1"];
+"insa/3IF37.html" -> "/temps/choix.gif" [label="1"];
+"insa/3IF37.html" -> "/temps/precedent.gif" [label="1"];
+"insa/" -> "/temps/style_emploi_du_temps.css" [label="1"];
+"insa/3IF37.html" -> "/temps/suivant.gif" [label="1"];
+}

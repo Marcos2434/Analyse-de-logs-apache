@@ -1,1 +1,1 @@
-./exe
+../../../analog -e -t 10 -g diagram.dot ../../../anonyme.log

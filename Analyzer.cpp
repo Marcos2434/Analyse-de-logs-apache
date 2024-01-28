@@ -45,8 +45,11 @@ Analyzer::~Analyzer() {
 }
 
 void Analyzer::Afficher() const {
+    unsigned int i = 0;
     for (auto const& x : orderedHits) {
+        if (i == 10) return;
         std::cout << x.second << " (" << x.first << " hits)" << std::endl;
+        i++;
     }
 }
 
