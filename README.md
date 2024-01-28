@@ -19,4 +19,5 @@ associés.
 Cette option permet de ne prendre en compte que les hits qui sont dans le créneau horaire
 correspondant à l’intervalle [heure, heure+1[.
 
-Le programme fournit un cadre de test pour une couverture maximale.
+Le programme fournit un cadre de test pour une couverture maximale. Elle suivre aussi les conventions d'écriture du Guide de style C++
+INSA/IF.
