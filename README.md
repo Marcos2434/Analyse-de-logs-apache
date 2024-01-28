@@ -5,7 +5,7 @@ Analyse de logs apache
 Usage: ./analog [options] <nomfichier.log>
 Ex. 
 ```
-./analog -e -g diagram.dot anonyme.log
+./analog -e -t 10 -g diagram.dot anonyme.log
 ```
 
 -e Cette option permet d’exclure tous les documents qui ont une extension de type image, css ou javascript. 
@@ -19,4 +19,4 @@ associés.
 Cette option permet de ne prendre en compte que les hits qui sont dans le créneau horaire
 correspondant à l’intervalle [heure, heure+1[.
 
-le programme fournit un cadre de test pour une couverture maximale.
+Le programme fournit un cadre de test pour une couverture maximale.
